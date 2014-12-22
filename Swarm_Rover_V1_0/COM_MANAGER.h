@@ -5,9 +5,11 @@
 
 class COM_MANAGER{ 
 public:
-  COM_MANAGER(byte pin); //Constructor 
+  COM_MANAGER(int pin); //Constructor 
   ~COM_MANAGER();        //Destructor
   void transmit(unsigned long data, int nbits);
+  boolean transmitObjectDetect(unsigned long data, int nbits, int RxPin);
+  void markObjectDetect(int uSec, int RxPin);
   void mark(int usec);
   void space(int usec);
 
