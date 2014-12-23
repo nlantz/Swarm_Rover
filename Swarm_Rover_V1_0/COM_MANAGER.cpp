@@ -4,10 +4,13 @@
 #include "COM_MANAGER.h" //include the declaration for this class
 #include "COM_MANAGER_INT.h" //include external parameters file
 
+//define pins  
+const int TX_PIN = A4;
+const int RX_PIN_0 = A0;
+const int RX_PIN_90 = A1;
+const int RX_PIN_180 = A2;
+const int RX_PIN_270 = A3;
 
-
-
-int transmitPin = A4; //default to A4 as per the schematic 
 int detectThreshold = 30; // higher values will make this more sensitive. 7 in minimum for objects within 2cm. 30 is about 30 cm   
 unsigned long endTime; //Variable for transmit calc.
 
@@ -15,9 +18,22 @@ unsigned long endTime; //Variable for transmit calc.
 int objectDetected = 0;    
 int numObjectSamples = 0;
 
+//Instatnitate reciever objects and the associated result objects
+IRrecv irrecv_0(RX_PIN_0);
+IRrecv irrecv_90(RX_PIN_90);
+IRrecv irrecv_180(RX_PIN_180);
+IRrecv irrecv_270(RX_PIN_270);
+decode_results results_0;
+decode_results results_90;
+decode_results results_180;
+decode_results results_270;
 
-COM_MANAGER::COM_MANAGER(int pin){
-  transmitPin = pin; //setup transmit out if not default
+
+COM_MANAGER::COM_MANAGER(){
+  //define pinmodes
+  pinMode(TX_PIN, OUTPUT);
+  pinMode(RX_PIN_0, INPUT);
+
 }
 
 COM_MANAGER::~COM_MANAGER(){
@@ -61,9 +77,9 @@ void COM_MANAGER::mark(int time) {
     //The calibrated delays are not exactly (1/2)period
     //They need to account for the write times and the while calculations
     //Their values need to be found by expweimentation with osciliscope
-    digitalWrite(transmitPin, MARK); //write the pin high 
+    digitalWrite(TX_PIN, 1); //write the pin high 
     delayMicroseconds(8);           //calibrated delay. 8 results in a 13uSec high
-    digitalWrite(transmitPin, 0);    //write the pin low  
+    digitalWrite(TX_PIN, 0);    //write the pin low  
     delayMicroseconds(4);           //calibrated delay. 4 results in a 13uSec low
   }
 }
@@ -72,7 +88,7 @@ void COM_MANAGER::mark(int time) {
 void COM_MANAGER::space(int time) {
   // Sends an IR space for the specified number of microseconds.
   // A space is no output, so the PWM output is disabled.
-  digitalWrite(transmitPin, SPACE); //set the output to low 
+  digitalWrite(TX_PIN, 0); //set the output to low 
   delayMicroseconds(time);          //delat for the appropriate time
 }
 
@@ -126,14 +142,15 @@ void COM_MANAGER::markObjectDetect(int time, int RxPin) {
     //The calibrated delays are not exactly (1/2)period
     //They need to account for the write times and the while calculations
     //Their values need to be found by expweimentation with osciliscope
-    digitalWrite(transmitPin, MARK); //write the pin high 
+    digitalWrite(TX_PIN, 1); //write the pin high 
     delayMicroseconds(3);           //calibrated delay. 8 results in a 13uSec high
     objectDetected += digitalRead(RxPin); //if the light reflected off a wall this will NOTincrement Remeber the sensor is active low
     numObjectSamples++;
-    digitalWrite(transmitPin, 0);    //write the pin low  
+    digitalWrite(TX_PIN, 0);    //write the pin low  
     delayMicroseconds(5);           //calibrated delay. 4 results in a 13uSec low
   }
 }
+
 
 
 

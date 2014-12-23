@@ -5,7 +5,7 @@
 
 class COM_MANAGER{ 
 public:
-  COM_MANAGER(int pin); //Constructor 
+  COM_MANAGER(); //Constructor 
   ~COM_MANAGER();        //Destructor
   void transmit(unsigned long data, int nbits);
   boolean transmitObjectDetect(unsigned long data, int nbits, int RxPin);
