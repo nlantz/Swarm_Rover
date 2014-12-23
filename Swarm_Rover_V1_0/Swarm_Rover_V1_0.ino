@@ -11,7 +11,10 @@
 
 //Define pins 
 const int TRANSMIT_PIN = A4;
-const int RX_PIN = A0;
+const int RX_PIN_0 = A0;
+//const int RX_PIN_90 = A0;
+//const int RX_PIN_180 = A0;
+//const int RX_PIN_270 = A0;
 
 
 //define values for later use
@@ -24,20 +27,19 @@ void setup()
   
   //define pinmodes
   pinMode(TRANSMIT_PIN, OUTPUT);
-  pinMode(RX_PIN, INPUT);
+  pinMode(RX_PIN_0, INPUT);
   
   COM_MANAGER cm(TRANSMIT_PIN);   //instantiate a communications manager 
   
+  //loop section here. Just because thats how I roll
   while(1)
   {
-      Serial.println(cm.transmitObjectDetect(data, numBits, RX_PIN));
+      //cm.transmitObjectDetect(data, numBits, RX_PIN_0);
   }
 
 }
 
-void loop()
-{
 
-}
+void loop(){}
 
 

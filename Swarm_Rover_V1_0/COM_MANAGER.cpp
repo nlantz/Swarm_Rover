@@ -1,23 +1,15 @@
+#include "IRremote.h"
+#include "IRremoteInt.h"
+
 #include "COM_MANAGER.h" //include the declaration for this class
-
-#define TOPBIT 0x80000000 //mask for transmit 
-
-// Pulse parms are *50-100 for the Mark and *50+100 for the space
-// First MARK is the one after the long gap
-// pulse parameters in usec
-#define NEC_HDR_MARK	9000
-#define NEC_HDR_SPACE	4500
-#define NEC_BIT_MARK	560
-#define NEC_ONE_SPACE	1600
-#define NEC_ZERO_SPACE	560
-
-#define MARK  1 //defines mark for IR transmit
-#define SPACE 0 //defiins space for IR transmit
+#include "COM_MANAGER_INT.h" //include external parameters file
 
 
-int transmitPin = A4; //default to A4 as per the schematic
-unsigned long endTime; //Variable for transmit calc. 
+
+
+int transmitPin = A4; //default to A4 as per the schematic 
 int detectThreshold = 30; // higher values will make this more sensitive. 7 in minimum for objects within 2cm. 30 is about 30 cm   
+unsigned long endTime; //Variable for transmit calc.
 
 //these variables are global because of the sensitive timing of the transmit sequence
 int objectDetected = 0;    
